@@ -1,0 +1,63 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #6b7276;
+  color: #42bfdd;
+}
+/* #42bfdd */
+
+#name,
+#description,
+#assignedTo,
+#dueDate,
+#status {
+  background-color: #42bfdd;
+  border: none;
+}
+
+#name::placeholder,
+#description::placeholder,
+#assignedTo::placeholder,
+#dueDate::placeholder,
+#status::placeholder {
+  color: #4d5052;
+}
+
+label {
+  font-size: 1.25rem;
+}
+
+.title {
+  margin-top: 25px;
+  color: #42bfdd;
+}
+
+.submit-button {
+  background-color: #42bfdd;
+  color: #393d3f;
+}
+
+.card {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+  border: none;
+  width: 40vw;
+}
+
+.form {
+  width: 40vw;
+}
+
+.list-group-item {
+  background-color: #42bfdd;
+  color: #393d3f;
+}
+
+.card-body {
+  background-color: #42bfdd;
+}
