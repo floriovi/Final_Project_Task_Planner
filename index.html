@@ -15,6 +15,12 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
       crossorigin="anonymous"
@@ -23,84 +29,234 @@
     <title>Final Project</title>
   </head>
   <body>
-    <h1 class="display-5 text-center title">Task Planner</h1>
-    <div class="container d-flex justify-content-center">
-      <form id="task-form" class="form">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            class="form-control w-100"
-            id="name"
-            placeholder="Name"
-            name="name"
-          />
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea
-            class="form-control"
-            id="description"
-            rows="2"
-            placeholder="Description"
-            name="description"
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="assignedTo">Assigned To</label>
-          <input
-            type="text"
-            class="form-control w-100"
-            id="assignedTo"
-            placeholder="Assigned To"
-            name="assignedTo"
-          />
-        </div>
-        <div class="form-group">
-          <label for="dueDate">Due Date</label>
-          <input
-            type="textStatus"
-            class="form-control w-100"
-            id="dueDate"
-            placeholder="Due Date (dd/mm/yyyy)"
-            name="dueDate"
-          />
-        </div>
-        <div class="form-group">
-          <label for="status">Status</label>
-          <select class="form-control w-100" id="status" name="status">
-            <option>TODO</option>
-            <option>IN PROGRESS</option>
-            <option>REVIEW</option>
-            <option>DONE</option>
-          </select>
-          <small id="error"></small>
-        </div>
-        <button type="submit" class="btn btn-secondary submit-button">
-          Add Task
-        </button>
-      </form>
-    </div>
-    <br />
-    <div class="container">
-      <div class="card">
-        <div class="card-body">
-          <div class="list-group collection">
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Practice Programming</h5>
-                <small>Due Date: 01/11/2020</small>
+    <div id="background">
+      <h1 class="display-5 text-center title">Task Planner</h1>
+      <!-- Form Section  -->
+      <div class="container">
+        <div class="row justify-content-around">
+          <div class="col col-lg-5">
+            <form id="task-form" class="form">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  class="form-control w-100"
+                  id="name"
+                  placeholder="Name"
+                  name="name"
+                />
               </div>
-              <p class="mb-1">
-                Donec id elit non mi porta gravida at eget metus. Maecenas sed
-                diam eget risus varius blandit.
-              </p>
-              <small>Donec id elit non mi porta.</small>
-            </a>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  rows="2"
+                  placeholder="Description"
+                  name="description"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="assignedTo">Assigned To</label>
+                <input
+                  type="text"
+                  class="form-control w-100"
+                  id="assignedTo"
+                  placeholder="Assigned To"
+                  name="assignedTo"
+                />
+              </div>
+              <div class="form-group">
+                <label for="dueDate">Due Date</label>
+                <input
+                  type="textStatus"
+                  class="form-control w-100"
+                  id="dueDate"
+                  placeholder="Due Date (dd/mm/yyyy)"
+                  name="dueDate"
+                />
+              </div>
+              <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control w-100" id="status" name="status">
+                  <option>TODO</option>
+                  <option>IN PROGRESS</option>
+                  <option>REVIEW</option>
+                  <option>DONE</option>
+                </select>
+                <small id="error"></small>
+              </div>
+              <button type="submit" value="submit" class="btn submit-button">
+                Add Task
+              </button>
+            </form>
+          </div>
+          <div class="col col-lg-5">
+            <div class="card-body" id="collection">
+              <div class="list-group collection">
+                <a href="#" class="list-group-item list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 task-name">Walk dog</h5>
+                    <small class="task-date">30/10/2020</small>
+                  </div>
+                  <p class="mb-1 task-description">sdfsdfsdfdsfdsfsdf</p>
+                  <small class="task-status">hi</small>
+                  <p>
+                    <small class="task-assigned-to">dfsdfsdgdsgsdgsdgsg</small>
+                  </p>
+                  <span><i class="fas fa-times fa-lg"></i></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Tasks section -->
+        <!-- <div class="container form">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            name="filter"
+            id="filter"
+            placeholder="Filter Tasks"
+            class="form-control"
+          />
+        </div>
+      </div> -->
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row justify-content-around">
+        <div class="col-lg-2">
+          <div class="card" style="width: 18rem">
+            <div class="card-header">Task</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Task ID:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Assigned To:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Due Date:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Status:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Description:</b>
+                <p>hello</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="card" style="width: 18rem">
+            <div class="card-header">Task</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Task ID:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Assigned To:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Due Date:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Status:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Description:</b>
+                <p>hello</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="card" style="width: 18rem">
+            <div class="card-header">Task</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Task ID:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Assigned To:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Due Date:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Status:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Description:</b>
+                <p>hello</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="card" style="width: 18rem">
+            <div class="card-header">Task</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Task ID:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Assigned To:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Due Date:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Status:</b>
+                <p>hello</p>
+              </li>
+              <li class="list-group-item">
+                <b>Description:</b>
+                <p>hello</p>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
+
+      <!-- <div class="card-body" id="collection">
+        <div class="list-group collection">
+          <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1 task-name">Walk dog</h5>
+              <small class="task-date">30/10/2020</small>
+            </div>
+            <p class="mb-1 task-description">sdfsdfsdfdsfdsfsdf</p>
+            <small class="task-status">hi</small>
+            <p>
+              <small class="task-assigned-to">dfsdfsdgdsgsdgsdgsg</small>
+            </p>
+            <span><i class="fas fa-times fa-lg"></i></span>
+          </a>
+        </div>
+      </div> -->
     </div>
+
+    <br />
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

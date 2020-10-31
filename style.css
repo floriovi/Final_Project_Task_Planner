@@ -4,19 +4,25 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: #6b7276;
-  color: #42bfdd;
+  color: #343d46;
+  background-color: #f0f0f0;
 }
-/* #42bfdd */
 
-#name,
-#description,
-#assignedTo,
-#dueDate,
-#status {
-  background-color: #42bfdd;
-  border: none;
+#background {
+  position: relative;
+}
+#background:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url(https://images.pexels.com/photos/434337/pexels-photo-434337.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+  background-size: 100vw;
+  width: 100%;
+  height: 100vh;
+  opacity: 0.6;
+  z-index: -1;
 }
 
 #name::placeholder,
@@ -24,40 +30,49 @@ body {
 #assignedTo::placeholder,
 #dueDate::placeholder,
 #status::placeholder {
-  color: #4d5052;
+  color: black;
+}
+
+.form-control {
+  color: #343d46;
+  background-color: transparent;
+  border: 1px solid #343d46;
 }
 
 label {
   font-size: 1.25rem;
+  color: black;
 }
 
 .title {
-  margin-top: 25px;
-  color: #42bfdd;
+  padding: 20px;
 }
 
 .submit-button {
-  background-color: #42bfdd;
-  color: #393d3f;
+  border: 1px solid black;
 }
 
-.card {
-  margin: 0 auto; /* Added */
-  float: none; /* Added */
-  margin-bottom: 10px; /* Added */
-  border: none;
-  width: 40vw;
+.list-group-item,
+.card-section-title {
+  color: #000;
+  background-color: transparent;
+  border: 1px solid black;
 }
 
-.form {
-  width: 40vw;
-}
-
-.list-group-item {
-  background-color: #42bfdd;
-  color: #393d3f;
-}
+/* .card-section-title {
+  padding: 5px;
+  margin-bottom: 0;
+} */
 
 .card-body {
-  background-color: #42bfdd;
+  background-color: transparent;
+  padding: 0;
+}
+
+.card-header {
+  color: #000;
+}
+.card {
+  background-color: transparent;
+  border: 1px solid black;
 }
