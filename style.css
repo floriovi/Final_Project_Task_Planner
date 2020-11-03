@@ -25,6 +25,10 @@ body {
   z-index: -1;
 }
 
+.bottom-section {
+  margin-top: 20px;
+}
+
 #name::placeholder,
 #description::placeholder,
 #assignedTo::placeholder,
@@ -75,4 +79,33 @@ label {
 .card {
   background-color: transparent;
   border: 1px solid black;
+}
+
+#detailed-task {
+  margin-top: 20px;
+}
+
+#task-list-no-detail {
+  margin-top: 20px;
+}
+
+#form-row {
+  margin-right: 50px;
+}
+
+/* Validation Error Styling */
+
+.success,
+.error {
+  color: white;
+  padding: 5px;
+  margin: 5px 0 15px 0;
+}
+
+.success {
+  background: green;
+}
+
+.error {
+  background: red;
 }
