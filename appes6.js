@@ -12,14 +12,20 @@ class Task {
   }
 }
 
+document.addEventListener("click", function (event) {
+  const isButton = event.target.nodeName == "BUTTON";
+  if (isButton) {
+    const element = event.target;
+    UI.deleteTask(element);
+  }
+});
+
 class UI {
   addTaskToList(task) {
     const taskCollection = document.getElementById("card-container");
 
     // Insert the custom list
-    taskCollection.insertAdjacentHTML(
-      "beforeend",
-      `
+    let cardHTML = `
     <div class="col-lg-2" id="detailed-task" taskId="${task.id}">
             <div class="card" style="width: 18rem">
               <div class="card-header">${task.name}</div>
@@ -40,31 +46,24 @@ class UI {
                   <b>Description:</b>
                   <p>${task.description}</p>
                 </li>
-                <span><i class="fas fa-times fa-lg"></i></span>
+                <button type="button" class="btn btn-primary" deleteID="${task.id}">Delete</button>
               </ul>
             </div>
           </div>;
-  `
-    );
+  `;
+
+    taskCollection.innerHTML += cardHTML;
 
     const taskList = document.getElementById("collection");
 
-    taskList.insertAdjacentHTML(
-      "beforeend",
-      ` <div class="list-group collection" taskId="${task.id}">
-                  <span href="#" class="list-group-item list-group-item">
-                    <div
-                      class="d-flex w-100 justify-content-between align-items-center"
-                    >
-                      <span class="mb-1 task-name">Task for ${task.assignedTo}</span>
-                      <span class="task-date">${task.dueDate}</span>
-                      <span class="task-status">${task.status}</span>
-                      <i class="fas fa-times fa-lg delete"></i>
-                    </div>
-                  </span>
-                </div>
-                `
-    );
+    let listHTML = ` <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" taskId="${task.id}">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Assigned To: ${task.assignedTo} </h5>
+            <small>Due Date: ${task.dueDate} </small>
+          </div>
+          <small>Status: ${task.status}</small>
+        </a>`;
+    taskList.innerHTML += listHTML;
   }
 
   showAlert(message, className) {
@@ -85,15 +84,28 @@ class UI {
     }, 3000);
   }
 
-  //   deleteBook(target) {
-  //     if (target.className === "delete") {
-  //       target.parentElement.parentElement.remove();
-  //     }
-  //   }
+  static deleteTask(element) {
+    //this removes the item from the array
 
-  static deleteBook(el) {
-    if (el.classList.contains("delete")) {
-      el.parentElement.parentElement.parentElement.remove();
+    let thisTaskID =
+      element.parentNode.parentNode.parentNode.attributes.taskId.value;
+    for (let i = 0; i < taskArray.length; i++) {
+      if ((taskArray[i].id = thisTaskID)) {
+        taskArray.splice(i, 1);
+      }
+    }
+    //removes card
+    element.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(
+      element.parentNode.parentNode.parentNode.parentNode
+    );
+
+    //removes task from list
+    let listAnchor = document.querySelectorAll("a");
+    for (let i = 0; i < listAnchor.length; i++) {
+      element = listAnchor[i];
+      if (element.attributes.taskId.value == thisTaskID) {
+        element.parentNode.removeChild(element);
+      }
     }
   }
 
@@ -135,9 +147,9 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
     taskName === "" ||
     taskDescription === "" ||
     taskAssignedTo === "" ||
-    taskAssignedTo.length < 8 ||
-    taskDescription.length < 20 ||
-    taskName.length < 8
+    taskAssignedTo.length < 3 ||
+    taskDescription.length < 10 ||
+    taskName.length < 3
   ) {
     // Error alert
     ui.showAlert(
@@ -149,7 +161,7 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
     ui.addTaskToList(task);
 
     // Show success
-    ui.showAlert("Book Added!", "success");
+    ui.showAlert("Task Added!", "success");
   }
 
   // Clear fields
@@ -158,7 +170,10 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
   e.preventDefault();
 });
 
-// Event: Remove a Book
-document.querySelector("#collection").addEventListener("click", function (e) {
-  UI.deleteBook(e.target);
-});
+// Event: Remove a Task
+// document.querySelector("#collection").addEventListener("click", function (e) {
+//   UI.deleteTask(e.target);
+// });
+// document.addEventListener("click", function (e) {
+//   UI.deleteTask(e.target);
+// });
