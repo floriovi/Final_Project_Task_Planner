@@ -1,6 +1,3 @@
-// Array
-let taskCollection = [];
-
 class Task {
   constructor(name, description, assignedTo, dueDate, status, array) {
     this.name = name;
@@ -49,7 +46,7 @@ class UI {
                 <button type="button" class="btn btn-primary" deleteID="${task.id}">Delete</button>
               </ul>
             </div>
-          </div>;
+          </div>
   `;
 
     taskCollection.innerHTML += cardHTML;
@@ -141,8 +138,6 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
   taskCollection.push(task);
   localStorage.setItem("taskArray", JSON.stringify(taskCollection));
 
-  // Instantiate the UI Object
-  const ui = new UI();
   // Validate
   if (
     taskName === "" ||
@@ -170,3 +165,21 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
 
   e.preventDefault();
 });
+
+// Array
+// Instantiate the UI Object
+const ui = new UI();
+let dataReturned = localStorage.getItem("taskArray");
+let taskCollection = [];
+if (dataReturned) {
+  taskCollection = JSON.parse(dataReturned);
+  populatePage(taskCollection);
+} else {
+  taskCollection = [];
+}
+
+function populatePage(array) {
+  for (let i = 0; i < array.length; i++) {
+    ui.addTaskToList(array[i]);
+  }
+}
