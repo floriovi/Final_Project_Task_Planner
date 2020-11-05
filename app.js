@@ -1,124 +1,123 @@
-// // Define User Interface Variables // Event Listeners
-const form = document.querySelector("#task-form"); // Targeting form
-const taskList = document.querySelector(".collection"); // Targeting list of all tasks
-const clearBtn = document.querySelector(".clear-tasks"); // Targets the clear button
-const filter = document.querySelector("#filter");
-const taskNameS = document.querySelector("#name"); // Targets the name input field
-const taskDescriptionS = document.querySelector("#description"); // Targets the description input field
-const taskAssignedToS = document.querySelector("#assignedTo"); // Targets the assigned to input field
-const taskDueDateS = document.querySelector("#dueDate"); // Targets the due date input field
-const taskStatusS = document.querySelector("#status"); // Targets the status input field
-const errorElement = document.getElementById("error"); // Targets the error message form validation
+// Array
+let taskArray = [];
 
-// Book Constructor
-let idCounter = (function () {
-  let id = 1;
-
-  return function taskPlanner(name, description, assignedTo, dueDate, status) {
-    this.id = id++;
+class Task {
+  constructor(name, description, assignedTo, dueDate, status, array) {
     this.name = name;
     this.description = description;
     this.assignedTo = assignedTo;
     this.dueDate = dueDate;
     this.status = status;
-  };
-})();
+    this.id = `${array.length < 1 ? 1 : array.length + 1}`;
+  }
+}
 
-// UI Constructor
-function UI() {}
+document.addEventListener("click", function (event) {
+  const isButton = event.target.nodeName == "BUTTON";
+  if (isButton) {
+    const element = event.target;
+    UI.deleteTask(element);
+  }
+});
 
-// Add task to list
-UI.prototype.addTaskToList = function (task) {
-  const taskCollection = document.getElementById("card-container");
+class UI {
+  addTaskToList(task) {
+    const taskCollection = document.getElementById("card-container");
 
-  // Insert the custom list
-  taskCollection.insertAdjacentHTML(
-    "beforeend",
-    `
-  <div class="col-lg-2" id="detailed-task">
-          <div class="card" style="width: 18rem">
-            <div class="card-header">${task.name}</div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <b>Task ID:</b>
-                <p>${task.id}</p>
-              </li>
-              <li class="list-group-item">
-                <b>Assigned To:</b>
-                <p>${task.assignedTo}</p>
-              </li>
-              <li class="list-group-item">
-                <b>Due Date:</b>
-                <p>${task.dueDate}</p>
-              </li>
-              <li class="list-group-item">
-                <b>Status:</b>
-                <p>${task.status}</p>
-              </li>
-              <li class="list-group-item">
-                <b>Description:</b>
-                <p>${task.description}</p>
-              </li>
-              <span><i class="fas fa-times fa-lg"></i></span>
-            </ul>
+    // Insert the custom list
+    let cardHTML = `
+    <div class="col-lg-2" id="detailed-task" taskId="${task.id}">
+            <div class="card" style="width: 18rem">
+              <div class="card-header">${task.name}</div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <b>Assigned To:</b>
+                  <p>${task.assignedTo}</p>
+                </li>
+                <li class="list-group-item">
+                  <b>Due Date:</b>
+                  <p>${task.dueDate}</p>
+                </li>
+                <li class="list-group-item">
+                  <b>Status:</b>
+                  <p>${task.status}</p>
+                </li>
+                <li class="list-group-item">
+                  <b>Description:</b>
+                  <p>${task.description}</p>
+                </li>
+                <button type="button" class="btn btn-primary" deleteID="${task.id}">Delete</button>
+              </ul>
+            </div>
+          </div>;
+  `;
+
+    taskCollection.innerHTML += cardHTML;
+
+    const taskList = document.getElementById("collection");
+
+    let listHTML = ` <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" taskId="${task.id}">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Assigned To: ${task.assignedTo} </h5>
+            <small>Due Date: ${task.dueDate} </small>
           </div>
-        </div>;
-`
-  );
+          <small>Status: ${task.status}</small>
+        </a>`;
+    taskList.innerHTML += listHTML;
+  }
 
-  const taskList = document.getElementById("collection");
+  showAlert(message, className) {
+    // Create div
+    const div = document.createElement("div");
+    // Add classes
+    div.className = `alert ${className}`;
+    // Add text
+    div.appendChild(document.createTextNode(message));
+    // Get parent
+    const container = document.querySelector(".container");
+    const formRow = document.querySelector(".formrow");
+    container.insertBefore(div, formRow);
 
-  taskList.insertAdjacentHTML(
-    "beforeend",
-    ` <div class="list-group collection">
-                <span href="#" class="list-group-item list-group-item">
-                  <div
-                    class="d-flex w-100 justify-content-between align-items-center"
-                  >
-                    <span class="mb-1 task-name">Task for ${task.assignedTo}</span>
-                    <span class="task-date">${task.dueDate}</span>
-                    <span class="task-status">${task.status}</span>
-                    <i class="fas fa-times fa-lg delete"></i>
-                  </div>
-                </span>
-              </div>
-              `
-  );
+    // Timeout after 3 seconds
+    setTimeout(function () {
+      document.querySelector(".alert").remove();
+    }, 3000);
+  }
 
-  // Reset Form Fields
-  document.getElementById("name").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("assignedTo").value = "";
-  document.getElementById("dueDate").value = "";
-  document.getElementById("status").value = "TODO";
-  console.log(task);
-};
+  static deleteTask(element) {
+    //this removes the item from the array
 
-// Show Alert
-UI.prototype.showAlert = function (message, className) {
-  // Create div
-  const div = document.createElement("div");
-  // Add classes
-  div.className = `alert ${className}`;
-  // Add text
-  div.appendChild(document.createTextNode(message));
-  // Get parent
-  const container = document.querySelector(".container");
-  const formRow = document.querySelector(".formrow");
-  container.insertBefore(div, formRow);
+    let thisTaskID =
+      element.parentNode.parentNode.parentNode.attributes.taskId.value;
+    for (let i = 0; i < taskArray.length; i++) {
+      if ((taskArray[i].id = thisTaskID)) {
+        taskArray.splice(i, 1);
+      }
+    }
+    //removes card
+    element.parentNode.parentNode.parentNode.parentNode.removeChild(
+      element.parentNode.parentNode.parentNode
+    );
 
-  // Timeout after 3 seconds
-  setTimeout(function () {
-    document.querySelector(".alert").remove();
-  }, 3000);
-};
+    //removes task from list
+    let listAnchor = document.querySelectorAll("a");
+    for (let i = 0; i < listAnchor.length; i++) {
+      element = listAnchor[i];
+      if (element.attributes.taskId.value == thisTaskID) {
+        element.parentNode.removeChild(element);
+      }
+    }
+  }
 
-// // Delete Task
-// UI.prototype.deleteBook = function (target) {
-//   if (target.className === "delete") {
-//     target.parentElement.parentElement.parentElement.remove();
-//   }
-// };
+  clearFields() {
+    // Reset Form Fields
+    document.getElementById("name").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("assignedTo").value = "";
+    document.getElementById("dueDate").value = "";
+    document.getElementById("status").value = "TODO";
+  }
+}
 
 //  Event Listeners for adding task
 document.querySelector("#task-form").addEventListener("submit", function (e) {
@@ -130,13 +129,16 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
   const taskStatus = document.getElementById("status").value;
 
   // Instantiate a Book
-  const task = new idCounter(
+  const task = new Task(
     taskName,
     taskDescription,
     taskAssignedTo,
     taskDueDate,
-    taskStatus
+    taskStatus,
+    taskArray
   );
+
+  taskArray.push(task);
 
   // Instantiate the UI Object
   const ui = new UI();
@@ -145,9 +147,9 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
     taskName === "" ||
     taskDescription === "" ||
     taskAssignedTo === "" ||
-    taskAssignedTo.length < 8 ||
-    taskDescription.length < 20 ||
-    taskName.length < 8
+    taskAssignedTo.length < 3 ||
+    taskDescription.length < 10 ||
+    taskName.length < 3
   ) {
     // Error alert
     ui.showAlert(
@@ -159,80 +161,19 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
     ui.addTaskToList(task);
 
     // Show success
-    ui.showAlert("Book Added!", "success");
+    ui.showAlert("Task Added!", "success");
   }
+
+  // Clear fields
+  ui.clearFields();
 
   e.preventDefault();
 });
 
-// // Event Listener for delete
-// document.getElementById("collection").addEventListener("click", function (e) {
-//   // Instantiate the UI Object
-//   const ui = new UI();
-
-//   // Delete Task
-//   ui.deleteBook(e.target);
-
-//   // Show message
-//   ui.showAlert("Task Removed!", "success");
-
-//   e.preventDefault();
+// Event: Remove a Task
+// document.querySelector("#collection").addEventListener("click", function (e) {
+//   UI.deleteTask(e.target);
 // });
-
-// // Load all event listeners
-// loadEventListeners();
-
-// // Load all event listeners
-// function loadEventListeners() {
-//     // Add task event
-//     form.addEventListener("submit", addTask);
-// }
-
-// // Add Task
-// function addTask(e) {
-//     if(name.value === "") {
-//         alert("Add a task");
-//     }
-
-//     // Create list group item / task-name
-//     const liItem = document.createElement("h5");
-//     // Add class
-//     liItem.className = "list-group-item list-group-item-action";
-//     // Add dead link attribute
-//     liItem.setAttribute("href", "#");
-
-//     // Create div containing task name and task date.
-//     const nameDateDiv = document.createElement("div");
-//     // Add class
-//     nameDateDiv.className = "d-flex w-100 justify-content-between";
-
-//     // Create task-name h5
-//     const headingFive = document.createElement("h5");
-//     // Add class
-//     headingFive.className = "mb-1 task-name";
-
-//     // Create task-date small
-//     const smallName = document.createElement("small");
-//     // Add class
-//     smallName.className = "task-date";
-
-//     // Create description p
-//     const descriptionP = document.createElement("p");
-//     // Add class
-//     descriptionP.className = "mb-1 task-description";
-
-//     // Add task-status small
-//     const smallStatus = document.createElement("small");
-//     // Add class
-//     smallStatus.className = "task-status"
-
-//     // Create p which contains the assigned to small
-//     const taskAssignedP = document.createElement("p");
-
-//     // Create small to go into the p
-//     const taskAssignedSmall = document.createElement("small");
-//     // Add class
-//     taskAssignedSmall.className = "task-assigned-to";
-
-//     // e.preventDefault();
-// }
+// document.addEventListener("click", function (e) {
+//   UI.deleteTask(e.target);
+// });

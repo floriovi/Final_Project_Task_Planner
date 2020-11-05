@@ -1,5 +1,5 @@
 // Array
-let taskArray = [];
+let taskCollection = [];
 
 class Task {
   constructor(name, description, assignedTo, dueDate, status, array) {
@@ -89,14 +89,14 @@ class UI {
 
     let thisTaskID =
       element.parentNode.parentNode.parentNode.attributes.taskId.value;
-    for (let i = 0; i < taskArray.length; i++) {
-      if ((taskArray[i].id = thisTaskID)) {
-        taskArray.splice(i, 1);
+    for (let i = 0; i < taskCollection.length; i++) {
+      if ((taskCollection[i].id = thisTaskID)) {
+        taskCollection.splice(i, 1);
       }
     }
     //removes card
-    element.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(
-      element.parentNode.parentNode.parentNode.parentNode
+    element.parentNode.parentNode.parentNode.parentNode.removeChild(
+      element.parentNode.parentNode.parentNode
     );
 
     //removes task from list
@@ -135,10 +135,11 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
     taskAssignedTo,
     taskDueDate,
     taskStatus,
-    taskArray
+    taskCollection
   );
 
-  taskArray.push(task);
+  taskCollection.push(task);
+  localStorage.setItem("taskArray", JSON.stringify(taskCollection));
 
   // Instantiate the UI Object
   const ui = new UI();
@@ -169,11 +170,3 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
 
   e.preventDefault();
 });
-
-// Event: Remove a Task
-// document.querySelector("#collection").addEventListener("click", function (e) {
-//   UI.deleteTask(e.target);
-// });
-// document.addEventListener("click", function (e) {
-//   UI.deleteTask(e.target);
-// });
