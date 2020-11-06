@@ -13,7 +13,12 @@ document.addEventListener("click", function (event) {
   const isButton = event.target.nodeName == "BUTTON";
   if (isButton) {
     const element = event.target;
-    UI.deleteTask(element);
+    let buttonJob = element.attributes.job.value;
+    if (buttonJob == "update") {
+      UI.updateTask(element);
+    } else if (buttonJob == "delete") {
+      UI.deleteTask(element);
+    }
   }
 });
 
@@ -43,7 +48,8 @@ class UI {
                   <b>Description:</b>
                   <p>${task.description}</p>
                 </li>
-                <button type="button" class="btn btn-primary" deleteID="${task.id}">Delete</button>
+                <button type="button" class="btn btn-primary" job="delete" deleteID="${task.id}">Delete</button>
+                <a href="#task-form"><button type="button" job="update" class="btn btn-primary" job="update" deleteID="${task.id}">Update</button></a>
               </ul>
             </div>
           </div>
@@ -89,6 +95,7 @@ class UI {
     for (let i = 0; i < taskCollection.length; i++) {
       if ((taskCollection[i].id = thisTaskID)) {
         taskCollection.splice(i, 1);
+        localStorage.setItem("taskArray", JSON.stringify(taskCollection));
       }
     }
     //removes card
@@ -104,6 +111,61 @@ class UI {
         element.parentNode.removeChild(element);
       }
     }
+  }
+
+  // Update Task
+  static updateTask(element) {
+    let currentTask = {};
+    let currentTaskID =
+      element.parentNode.parentNode.parentNode.parentNode.attributes.taskId
+        .value;
+
+    for (let i = 0; i < taskCollection.length; i++) {
+      if (taskCollection[i].id == currentTaskID) {
+        currentTask = taskCollection[i];
+      }
+    }
+    document.querySelector("#name").value = currentTask.name;
+    document.querySelector("#assignedTo").value = currentTask.assignedTo;
+    document.querySelector("#description").value = currentTask.description;
+
+    document.querySelector(
+      "#addButton"
+    ).outerHTML = `<button type="button" id="saveUpdate" class="btn btn-primary" job="saveUpdate">Save</button>`;
+
+    document
+      .querySelector("#saveUpdate")
+      .addEventListener("click", function () {
+        const taskName = document.querySelector("#name").value;
+        const taskDescription = document.querySelector("#description").value;
+        const taskAssignedTo = document.querySelector("#assignedTo").value;
+        const taskDueDate = document.querySelector("#dueDate").value;
+        const taskStatus = document.getElementById("status").value;
+        if (
+          taskName === "" ||
+          taskDescription === "" ||
+          taskAssignedTo === "" ||
+          taskAssignedTo.length < 3 ||
+          taskDescription.length < 10 ||
+          taskName.length < 3
+        ) {
+          // Error alert
+          ui.showAlert(
+            "Please fill in all fields, name and assigned to need to be longer than 8 characters and description longer than 20",
+            "error"
+          );
+        } else {
+          currentTask.name = taskName;
+          currentTask.description = taskDescription;
+          currentTask.assignedTo = taskAssignedTo;
+          currentTask.dueDate = taskDueDate;
+          currentTask.status = taskStatus;
+          localStorage.setItem("taskArray", JSON.stringify(taskCollection));
+
+          location.reload();
+          console.log(taskCollection);
+        }
+      });
   }
 
   clearFields() {
@@ -169,10 +231,10 @@ document.querySelector("#task-form").addEventListener("submit", function (e) {
 // Array
 // Instantiate the UI Object
 const ui = new UI();
-let dataReturned = localStorage.getItem("taskArray");
-let taskCollection = [];
+let dataReturned = localStorage.getItem("taskArray"); // Retrieves local storage item from key
+let taskCollection = []; // initiates array
 if (dataReturned) {
-  taskCollection = JSON.parse(dataReturned);
+  taskCollection = JSON.parse(dataReturned); // If data is present in local storage, parse it back into an object
   populatePage(taskCollection);
 } else {
   taskCollection = [];
