@@ -37,7 +37,7 @@ class UI {
 
     // Insert the custom list
     let cardHTML = `
-    <div class="col-lg-2" id="detailed-task" taskId="${task.id}">
+    <div class="col col-md-4" id="detailed-task" taskId="${task.id}">
             <div class="card" style="width: 18rem">
               <div class="card-header">${task.name}</div>
               <ul class="list-group list-group-flush">
