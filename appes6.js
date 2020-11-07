@@ -17,7 +17,16 @@ document.addEventListener("click", function (event) {
     if (buttonJob == "update") {
       UI.updateTask(element);
     } else if (buttonJob == "delete") {
-      UI.deleteTask(element);
+      if (confirm("Are you sure? This action will delete the current task!")) {
+        UI.deleteTask(element);
+      }
+    } else if (buttonJob == "clear") {
+      if (
+        confirm("Are you sure? This action will remove all tasks irreversibly!")
+      ) {
+        localStorage.clear();
+        location.reload();
+      }
     }
   }
 });
@@ -48,8 +57,8 @@ class UI {
                   <b>Description:</b>
                   <p>${task.description}</p>
                 </li>
-                <button type="button" class="btn btn-primary" job="delete" deleteID="${task.id}">Delete</button>
-                <a href="#task-form"><button type="button" job="update" class="btn btn-primary" job="update" deleteID="${task.id}">Update</button></a>
+                <button type="button" id="deleteButton" class="btn btn-outline-dark" job="delete" deleteID="${task.id}">Delete</button>
+                <a id="blockAnchor" href="#task-form"><button id="updateButton" type="button" job="update" class="btn btn-outline-dark" job="update" deleteID="${task.id}">Update</button></a>
               </ul>
             </div>
           </div>
@@ -131,7 +140,7 @@ class UI {
 
     document.querySelector(
       "#addButton"
-    ).outerHTML = `<button type="button" id="saveUpdate" class="btn btn-primary" job="saveUpdate">Save</button>`;
+    ).outerHTML = `<button type="button" id="saveUpdate" class="btn btn-outline-dark" job="saveUpdate">Save</button>`;
 
     document
       .querySelector("#saveUpdate")

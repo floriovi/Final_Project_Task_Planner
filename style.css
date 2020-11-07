@@ -109,3 +109,20 @@ label {
 .error {
   background: red;
 }
+
+.btn-outline-dark {
+  background-color: transparent;
+  color: #000;
+}
+
+#updateButton {
+  width: 100%;
+}
+
+#deleteButton {
+  color: red;
+}
+
+#clearButton {
+  float: right;
+}
